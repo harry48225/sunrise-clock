@@ -4,18 +4,47 @@ import { Line } from 'react-chartjs-2';
 
 function TimeWave() {
 
-    const data = {
-        labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
-        datasets: [
-            {
-                data: [-50,-51, -48, -43, -36, -28, -20, -11, -3, 4, 10, 15, 17, 18, 16, 12, 7, 0, -7, -15, -24, -33, -40, -46],
-                fill: false,
-                pointRadius: 0, // Remove the points
-                borderColor: 'rgba(255,85,43, 1)',
-                cubicInterpolationMode: 'monotone',
-            }
-        ]
+    // Hardcoded maybe change in the future
+    const LATITUDE = 53.6
+    const LONGITUDE = -2.48
+    var SunCalc = require('suncalc');
+
+    var data = {};
+
+    function compute_sun_positions() {
+        let today = new Date();
+
+        today.setHours(0);
+        today.setMinutes(0);
+        
+        var altitude_array = [];
+
+        for (let i = 0; i < 24; i++) {
+            today.setHours(i);
+
+            let sunPos = SunCalc.getPosition(today, LATITUDE, LONGITUDE);
+            altitude_array.push(sunPos.altitude);
+        }
+
+        today.setDate(today.getDate() + 1);
+        let sunPos = SunCalc.getPosition(today, LATITUDE, LONGITUDE);
+        altitude_array.push(sunPos.altitude);
+
+        data = {
+            labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
+            datasets: [
+                {
+                    data: altitude_array,
+                    fill: false,
+                    pointRadius: 0, // Remove the points
+                    borderColor: 'rgba(255,85,43, 1)',
+                    cubicInterpolationMode: 'monotone',
+                }
+            ]
+        }
     }
+
+    compute_sun_positions();
     const options = {
         layout: {
             padding: {
@@ -28,7 +57,7 @@ function TimeWave() {
                     display: false
                 },
                 ticks: {
-                    display: false
+                    display: true
                 }
             }],
             yAxes: [{
@@ -44,6 +73,8 @@ function TimeWave() {
           display: false  
         },
     }
+
+    
     return (
         <Line data={data} options={options}/>
     )
