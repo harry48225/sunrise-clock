@@ -59,6 +59,23 @@ def add_alarm():
 
     return "added"
 
+@app.route('/get_alarms', methods=['GET'])
+def get_alarms():
+    ''' Get the alarms and return as JSON, sorted by time '''
+
+    alarm_list = []
+
+    d = get_database()
+    for alarm_row in d.cursor().execute('SELECT * FROM alarms ORDER BY time'):
+        # might be a better way to do this ...
+        alarm = {'id':alarm_row[0], 'time':alarm_row[1], 'mon':alarm_row[2], 'tue':alarm_row[3],
+                'wed':alarm_row[4], 'thur':alarm_row[5], 'fri':alarm_row[6], 'sat':alarm_row[7],
+                'sun':alarm_row[8]}
+
+        alarm_list.append(alarm)
+
+    return jsonify({'alarms': alarm_list})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
