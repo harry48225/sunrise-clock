@@ -74,8 +74,24 @@ def get_alarms():
 
         alarm_list.append(alarm)
 
+    d.close()
+
     return jsonify({'alarms': alarm_list})
 
+@app.route('/delete_alarm', methods=['POST'])
+def delete_alarm():
+    ''' Deletes an alarm given the id '''
+
+    deletion_id = request.get_json()['id']
+
+    d = get_database()
+
+    d.cursor().execute('DELETE FROM alarms WHERE id=?', [deletion_id])
+
+    d.commit()
+    d.close()
+
+    return "deleted"
 
 if __name__ == '__main__':
     app.run(debug=True)
