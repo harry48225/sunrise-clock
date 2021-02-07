@@ -1,5 +1,6 @@
 import TimeWave from './TimeWave';
 import AlarmTable from './AlarmTable';
+import AlarmCreator from './AlarmCreator';
 
 import { Typography, Layout } from 'antd';
 import { Card } from 'antd';
@@ -25,6 +26,9 @@ function App() {
         </Card>
         <Card style={{ margin: 20}}>
           <AlarmTable></AlarmTable>
+        </Card>
+        <Card style={{ margin: 20}}>
+          <AlarmCreator></AlarmCreator>
         </Card>
       </Content>
     </div>
