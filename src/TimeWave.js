@@ -1,4 +1,3 @@
-import Title from 'antd/lib/skeleton/Title';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
