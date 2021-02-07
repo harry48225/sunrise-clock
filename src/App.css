@@ -1,3 +1,12 @@
 .header {
   color: white;
 }
+
+.App {
+  background-color: lightgrey;
+  min-height: 100%;
+}
+
+.dayButton {
+  margin: 2px;
+}
