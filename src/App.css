@@ -1,10 +1,10 @@
-.header {
-  color: white;
+.topBar {
+  background-color: orangered;
 }
 
 .App {
   background-color: lightgrey;
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 .dayButton {
