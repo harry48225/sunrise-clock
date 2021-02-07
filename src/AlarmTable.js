@@ -1,6 +1,8 @@
 import DayButtons from './DayButtons';
 
+
 import { Table, Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons'
 import React from 'react';
 
 
@@ -36,6 +38,15 @@ function AlarmTable() {
 
           ),
         },
+        {
+            title: '',
+            dataIndex: 'actions',
+            key: 'actions',
+            render: () => (
+                <Button icon={<DeleteOutlined />}/>
+            )
+
+        }
       ];
 
     return (
