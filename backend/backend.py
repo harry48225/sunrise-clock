@@ -93,5 +93,30 @@ def delete_alarm():
 
     return "deleted"
 
+@app.route('/modify_alarm', methods=['POST'])
+def modify_alarm():
+    ''' Give an id and the fields to modify '''
+
+    ''' Expects a json of the form {'id': <id to modify>, 'fields': {<field name>:<new_value>, etc.}'''
+
+    request_json = request.get_json()
+    update_id = request_json['id']
+
+    fields_to_update = request_json['fields']
+
+    d = get_database()
+
+    for field in fields_to_update:
+
+        print(f"key: {field}, value:{fields_to_update[field]}")
+
+        # .format poses an injection risk!
+        d.cursor().execute('UPDATE alarms SET {} = ? WHERE id = ?'.format(field), [fields_to_update[field], update_id])
+
+    d.commit()
+    d.close()
+    return "modified"
+
+
 if __name__ == '__main__':
     app.run(debug=True)
