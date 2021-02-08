@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
+
 import sqlite3
 from uuid import uuid4
 
@@ -34,6 +36,8 @@ def get_database():
     return sqlite3.connect(DATABASE)
 
 app = Flask(__name__)
+
+CORS(app)
 
 @app.route('/')
 def index():
