@@ -15,7 +15,7 @@ import { useState } from 'react';
 function App() {
 
   
-  const apiUrl = "http://localhost:5000/";
+  const apiUrl = "/api/";
 
   const { Header, Content, Footer } = Layout;
   const { Title } = Typography;
@@ -25,7 +25,7 @@ function App() {
 
   function get_alarms() {
     let response_json;
-    response_json = fetch(apiUrl).then((response) => { return response.json();})
+    response_json = fetch(apiUrl+"get_alarms").then((response) => { return response.json();})
     
     response_json.then((data) => console.log(data))
   }

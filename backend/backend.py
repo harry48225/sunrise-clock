@@ -39,11 +39,11 @@ app = Flask(__name__)
 
 CORS(app)
 
-@app.route('/')
+@app.route('/api')
 def index():
-    return jsonify({'about':'Welcome to the alarm clock'})
+    return jsonify({'about':'Welcome to the alarm clock api'})
 
-@app.route('/add_alarm', methods=['POST'])
+@app.route('/api/add_alarm', methods=['POST'])
 def add_alarm():
     # Expects a json {'time': 'HH:mm'}
     n_alarm = request.get_json()
@@ -63,7 +63,7 @@ def add_alarm():
 
     return "added"
 
-@app.route('/get_alarms', methods=['GET'])
+@app.route('/api/get_alarms', methods=['GET'])
 def get_alarms():
     ''' Get the alarms and return as JSON, sorted by time '''
 
@@ -82,7 +82,7 @@ def get_alarms():
 
     return jsonify({'alarms': alarm_list})
 
-@app.route('/delete_alarm', methods=['POST'])
+@app.route('/api/delete_alarm', methods=['POST'])
 def delete_alarm():
     ''' Deletes an alarm given the id '''
 
@@ -97,7 +97,7 @@ def delete_alarm():
 
     return "deleted"
 
-@app.route('/modify_alarm', methods=['POST'])
+@app.route('/api/modify_alarm', methods=['POST'])
 def modify_alarm():
     ''' Give an id and the fields to modify '''
 
