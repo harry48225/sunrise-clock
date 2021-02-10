@@ -7,7 +7,7 @@ import {useState, useEffect} from 'react';
 import React from 'react';
 
 
-function AlarmTable({alarm_list}) {
+function AlarmTable({alarm_list, modify_alarm}) {
 
   const columns = [
     {
@@ -20,9 +20,9 @@ function AlarmTable({alarm_list}) {
       dataIndex: 'days',
       key: 'days',
       
-      render: days => (
+      render: (days, record) => (
         <>
-            <DayButtons days={days}/>
+            <DayButtons days={days} modify_alarm={(day) => modify_alarm(record.key, day)}/>
         </>
 
       ),

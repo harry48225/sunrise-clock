@@ -20,6 +20,15 @@ function App() {
 
   const [alarm_list, set_alarms_list] = useState();
 
+  function modify_alarm(id, fields) {
+
+    // Takes the id of the alarm to modify
+    // and then the fields 
+    // {'id': <id to modify>, 'fields': {<field name>:<new_value>, etc.}
+    fetch(apiUrl+"modify_alarm", { method: 'POST', 
+                                  headers: {'Content-Type': 'application/json'},
+                                  body: JSON.stringify({id:id, fields:fields}) }).then(() => get_alarms())
+  }
   
   function get_alarms() {
     let response_json;
@@ -63,7 +72,7 @@ function App() {
           <TimeWave></TimeWave>
         </Card>
         <Card style={{ margin: 20}}>
-          <AlarmTable alarm_list={alarm_list}></AlarmTable>
+          <AlarmTable alarm_list={alarm_list} modify_alarm={modify_alarm}></AlarmTable>
         </Card>
         <Card style={{ margin: 20}}>
           <AlarmCreator></AlarmCreator>
