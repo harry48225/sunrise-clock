@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { Form, Button, TimePicker, Row } from 'antd';
+import { Form, Button, TimePicker, Row, Input } from 'antd';
 import Item from 'antd/lib/list/Item';
+import moment from 'moment';
 
-function AlarmCreator() {
+function AlarmCreator({add_alarm_callback}) {
 
     const onFinish = (values) => {
-        console.log('Success:', values);
+        add_alarm_callback(values.time.format("HH:mm"));
+        console.log('Success:', values.time.format("HH:mm"));
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -15,14 +17,15 @@ function AlarmCreator() {
 
     return (
         <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-            <Form.Item
-                name="time">
-                    <Row justify='space-around' align="middle">
-                        <span>Time</span>
-                        <TimePicker format="HH:mm"/>
-                        <Button type="primary" htmlType="submit">Add alarm</Button>
-                    </Row>
-            </Form.Item>
+            <Row justify="space-around" align="middle">
+                <Form.Item label="Time" rules={[{required:true, type:'object'}]}
+                    name="time">
+                    <TimePicker format="HH:mm" />
+                </Form.Item>
+                <Form.Item>
+                <Button type="primary" htmlType="submit">Add alarm</Button>
+                </Form.Item>
+            </Row>
         </Form>
     )
 }

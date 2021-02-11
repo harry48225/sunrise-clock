@@ -20,6 +20,15 @@ function App() {
 
   const [alarm_list, set_alarms_list] = useState();
 
+
+
+  function add_alarm(time) {
+    // Takes a time "HH:mm" and adds it to the database
+    fetch(apiUrl+"add_alarm", { method: 'POST', 
+                                  headers: {'Content-Type': 'application/json'},
+                                  body: JSON.stringify({time:time}) }).then(() => get_alarms())
+  }
+
   function modify_alarm(id, fields) {
 
     // Takes the id of the alarm to modify
@@ -75,7 +84,7 @@ function App() {
           <AlarmTable alarm_list={alarm_list} modify_alarm={modify_alarm}></AlarmTable>
         </Card>
         <Card style={{ margin: 20}}>
-          <AlarmCreator></AlarmCreator>
+          <AlarmCreator add_alarm_callback={add_alarm}></AlarmCreator>
         </Card>
       </Content>
     </div>
