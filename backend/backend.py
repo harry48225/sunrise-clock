@@ -4,6 +4,14 @@ from flask_cors import CORS
 import sqlite3
 from uuid import uuid4
 
+from datetime import date, datetime, timedelta
+
+from kelvin_to_rgb import convert_K_to_RGB
+
+BUILD_UP_LENGTH = 30*60 # Number of seconds alarm should take to reach full intensity
+
+DAYS_OF_WEEK = ['mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun']
+
 DATABASE = 'alarms.db'
 
 # Load the database
@@ -42,6 +50,50 @@ CORS(app)
 @app.route('/api')
 def index():
     return jsonify({'about':'Welcome to the alarm clock api'})
+
+@app.route('/api/get_colour_rgbw', methods=['GET'])
+def get_colour():
+    ''' Returns the colour that the alarm should be'''
+    
+    current_day = DAYS_OF_WEEK[date.today().weekday()]
+    r,g,b,w = 0,0,0,0
+
+    d = get_database()
+
+    alarm_times = []
+    # Get the alarms from the database that are scheduled for today
+    for time in d.cursor().execute(f'SELECT time FROM alarms WHERE {current_day}=1'):
+
+        time_split = time[0].split(":")
+
+        hours = int(time_split[0])
+        minutes = int(time_split[1])
+
+        alarm_times.append(datetime.now().replace(hour=hours, minute=minutes, second=0, microsecond=0))
+
+    for alarm in alarm_times:
+
+        time_until_alarm = alarm - datetime.now()
+
+        if timedelta()< time_until_alarm < timedelta(minutes=30):
+            build_up_progress = 1 - time_until_alarm.seconds / BUILD_UP_LENGTH
+            print("less than 30 for " + str(alarm.time()) + f" with exact time {time_until_alarm.seconds/60} and build_up {build_up_progress}")
+
+            # Now rescale so that the progress is from 1500k to 6500k
+
+            colour_temp = 1500 + (6500 - 1500)*build_up_progress
+
+            r,g,b= convert_K_to_RGB(colour_temp)
+            w = build_up_progress*255
+            
+            
+            r = int(r)
+            g = int(g)
+            b = int(b)
+            w = int(w)
+    d.close()
+
+    return jsonify({'r':r, 'g':g, 'b':b, 'w':w})
 
 @app.route('/api/add_alarm', methods=['POST'])
 def add_alarm():
