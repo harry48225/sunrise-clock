@@ -7,7 +7,7 @@ import {useState, useEffect} from 'react';
 import React from 'react';
 
 
-function AlarmTable({alarm_list, modify_alarm}) {
+function AlarmTable({alarm_list, modify_alarm, delete_alarm}) {
 
   const columns = [
     {
@@ -32,8 +32,8 @@ function AlarmTable({alarm_list, modify_alarm}) {
         title: '',
         dataIndex: 'actions',
         key: 'actions',
-        render: () => (
-            <Button icon={<DeleteOutlined />}/>
+        render: (actions, record) => (
+            <Button icon={<DeleteOutlined />} onClick={() => delete_alarm(record.key)}/>
         )
 
     }

@@ -20,7 +20,12 @@ function App() {
 
   const [alarm_list, set_alarms_list] = useState();
 
-
+  function delete_alarm(id) {
+    // Takes the id of an alarm and deletes it
+    fetch(apiUrl+"delete_alarm", { method: 'POST', 
+                                  headers: {'Content-Type': 'application/json'},
+                                  body: JSON.stringify({id:id}) }).then(() => get_alarms())
+  }
 
   function add_alarm(time) {
     // Takes a time "HH:mm" and adds it to the database
@@ -81,7 +86,7 @@ function App() {
           <TimeWave></TimeWave>
         </Card>
         <Card style={{ margin: 20}}>
-          <AlarmTable alarm_list={alarm_list} modify_alarm={modify_alarm}></AlarmTable>
+          <AlarmTable alarm_list={alarm_list} modify_alarm={modify_alarm} delete_alarm={delete_alarm}></AlarmTable>
         </Card>
         <Card style={{ margin: 20}}>
           <AlarmCreator add_alarm_callback={add_alarm}></AlarmCreator>
