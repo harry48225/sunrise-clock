@@ -15,9 +15,15 @@ if [ "$1" == "backend" ]; then
     deactivate
     cd ..
     echo "Copying backend"
-    rsync -r backend/*.py pi@sunrise.local:/home/pi/backend
+    rsync -r backend/*.py pi@sunrise.local:/home/pi/backend/
     echo "Copying requirements"
-    rsync backend/requirements.txt pi@sunrise.local:/home/pi/backend
+    rsync backend/requirements.txt pi@sunrise.local:/home/pi/backend/
+fi
+
+if [ "$1" == "client" ]; then
+    echo "Copying client"
+    rsync -r client/*.py pi@sunrise.local:/home/pi/client/
+    echo "Copied client!"
 fi
 
 # Note then need to install nginx and set the root to be /home/pi/frontend, then proxy requests to /api/ to 127.0.0.1:5000
