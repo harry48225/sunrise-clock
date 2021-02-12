@@ -1,10 +1,11 @@
 import board
 import neopixel
+import adafruit_fancyled.adafruit_fancyled as fancy
 
 import requests
 from time import sleep
 
-pixels = neopixel.NeoPixel(board.D18, 24, auto_write=False, brightness=0.1, pixel_order=neopixel.GRBW) # 24 pixels , brightness at half for now
+pixels = neopixel.NeoPixel(board.D18, 24, auto_write=False, brightness=1, pixel_order=neopixel.GRBW) # 24 pixels , brightness at half for now
 
 pixels.fill((0, 0, 0, 0))
 pixels.show()
@@ -33,7 +34,9 @@ while True:
 
     colour = requests.get("http://localhost/api/get_colour_rgbw").json()
     print(f"color: {colour}")
-    pixels.fill((colour['r'], colour['g'], colour['b'], colour['w']))
+
+    fancy_colour = fancy.CRGB(colour['r'], colour['g'], colour['b'])
+    pixels.fill(fancy.gamma_adjust(fancy_colour).pack())# colour['w']))
     pixels.show()
     print("sleeping")
     sleep(1)
