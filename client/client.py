@@ -5,7 +5,7 @@ import adafruit_fancyled.adafruit_fancyled as fancy
 import requests
 from time import sleep
 
-pixels = neopixel.NeoPixel(board.D18, 24, auto_write=False, brightness=1, pixel_order=neopixel.GRBW) # 24 pixels , brightness at half for now
+pixels = neopixel.NeoPixel(board.D12, 24, auto_write=False, brightness=1, pixel_order=neopixel.GRBW) # 24 pixels , brightness at half for now
 
 pixels.fill((0, 0, 0, 0))
 pixels.show()
