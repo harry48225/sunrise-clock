@@ -10,6 +10,7 @@ import './App.css';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { useState } from 'react';
 import { useEffect } from 'react';
+import UserColourPicker from './UserColourPicker';
 
 
 
@@ -90,6 +91,9 @@ function App() {
         </Card>
         <Card style={{ margin: 20}}>
           <AlarmCreator add_alarm_callback={add_alarm}></AlarmCreator>
+        </Card>
+        <Card style={{ margin: 20 }} >
+          <UserColourPicker />
         </Card>
       </Content>
     </div>
