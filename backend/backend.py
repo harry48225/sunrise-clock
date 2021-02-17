@@ -103,9 +103,9 @@ def update_colour():
             b = int(b)
             w = int(w)
 
-    d.cursor().execute(f'UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,w))
-    d.commit()
-    d.close()
+        d.cursor().execute(f'UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,w))
+        d.commit()
+        d.close()
 
 
 # Make the update_colour function run every second
