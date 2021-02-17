@@ -44,6 +44,14 @@ function App() {
                                   headers: {'Content-Type': 'application/json'},
                                   body: JSON.stringify({id:id, fields:fields}) }).then(() => get_alarms())
   }
+
+  function set_colour(red, green, blue) {
+    // Sets the colour of the clock
+
+    fetch(apiUrl+"set_colour_rgb", {method: 'POST',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({red: red, green: green, blue:blue})});
+  }
   
   function get_alarms() {
     let response_json;
@@ -93,7 +101,7 @@ function App() {
           <AlarmCreator add_alarm_callback={add_alarm}></AlarmCreator>
         </Card>
         <Card style={{ margin: 20 }} >
-          <UserColourPicker />
+          <UserColourPicker set_colour_callback={set_colour} />
         </Card>
       </Content>
     </div>

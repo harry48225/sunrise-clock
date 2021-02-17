@@ -259,6 +259,21 @@ def modify_alarm():
     d.close()
     return "modified"
 
+@app.route('/api/set_colour_rgb', methods=['POST'])
+def set_colour_rgb():
+
+    request_json = request.get_json()
+    print(request_json)
+    r = int(request_json['red'])
+    g = int(request_json['green'])
+    b = int(request_json['blue'])
+
+
+    d = get_database()
+    d.cursor().execute('UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,0))
+    d.commit()
+    d.close()
+    return "colour set"
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
