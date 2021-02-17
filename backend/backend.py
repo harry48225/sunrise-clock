@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from apscheduler.schedulers.background import BackgroundScheduler
 
 import sqlite3
 from uuid import uuid4
@@ -37,6 +38,21 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS alarms (id TEXT PRIMARY KEY,\
                                                 sat INTEGER,\
                                                 sun INTEGER)''')
 
+
+# Create a table that stores the current colour of the alarm
+cursor.execute('''CREATE TABLE IF NOT EXISTS colours (red INTEGER,\
+                                                    green INTEGER,\
+                                                    blue INTEGER,\
+                                                    white INTEGER)''')
+
+# Insert a blank colour if the table is empty
+
+table_length = cursor.execute("SELECT COUNT(*) FROM colours").fetchone()[0]
+if table_length == 0:
+    cursor.execute('''INSERT INTO colours VALUES (?,?,?,?)''', (0,0,0,0))
+
+
+database_conn.commit()
 database_conn.close()
 
 def get_database():
@@ -47,14 +63,9 @@ app = Flask(__name__)
 
 CORS(app)
 
-@app.route('/api')
-def index():
-    return jsonify({'about':'Welcome to the alarm clock api'})
+def update_colour():
+    ''' called periodically and computes the colour that the alarm should be '''
 
-@app.route('/api/get_colour_rgbw', methods=['GET'])
-def get_colour():
-    ''' Returns the colour that the alarm should be'''
-    
     current_day = DAYS_OF_WEEK[date.today().weekday()]
     r,g,b,w = 0,0,0,0
 
@@ -91,7 +102,37 @@ def get_colour():
             g = int(g)
             b = int(b)
             w = int(w)
+
+    d.cursor().execute(f'UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,w))
+    d.commit()
     d.close()
+
+
+# Make the update_colour function run every second
+
+scheduler = BackgroundScheduler()
+scheduler.start()
+
+scheduler.add_job(update_colour, 'interval', seconds=1)
+
+
+@app.route('/api')
+def index():
+    return jsonify({'about':'Welcome to the alarm clock api'})
+
+@app.route('/api/get_colour_rgbw', methods=['GET'])
+def get_colour():
+    ''' Returns the colour that the alarm should be'''
+    
+    d = get_database()
+
+    for colour_row in d.cursor().execute('SELECT red, green, blue, white from colours'):
+        print(colour_row)
+
+        r = colour_row[0]
+        g = colour_row[1]
+        b = colour_row[2]
+        w = colour_row[3]
 
     return jsonify({'r':r, 'g':g, 'b':b, 'w':w})
 
