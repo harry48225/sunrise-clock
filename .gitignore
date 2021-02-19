@@ -25,3 +25,4 @@ yarn-error.log*
 backend/venv
 backend/alarms.db
 .vscode/settings.json
+cad/body.stl
