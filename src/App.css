@@ -16,3 +16,8 @@
 .footer {
   background-color: #556B2F !important;
 }
+
+.card {
+  border-radius: 15px !important;
+  margin: 20px !important;
+}

@@ -97,16 +97,16 @@ function App() {
         <img src={combee_gif} alt="combee" style={{margin: 0, float: 'right'}}/>
       </Header>
       <Content>
-        <Card style={{ margin: 20}}>
+        <Card className="card">
           <TimeWave></TimeWave>
         </Card>
-        <Card style={{ margin: 20}}>
+        <Card className="card">
           <AlarmTable alarm_list={alarm_list} modify_alarm={modify_alarm} delete_alarm={delete_alarm}></AlarmTable>
         </Card>
-        <Card style={{ margin: 20}}>
+        <Card className="card">
           <AlarmCreator add_alarm_callback={add_alarm}></AlarmCreator>
         </Card>
-        <Card style={{ margin: 20 }} >
+        <Card className="card">
           <UserColourPicker set_colour_callback={set_colour} />
         </Card>
       </Content>
