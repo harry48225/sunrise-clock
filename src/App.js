@@ -89,7 +89,7 @@ function App() {
   
   return (
     <div className="App">
-      <Header className='clearfix'><div className="topBar"><Title underline={true}>Alarm</Title></div></Header>
+      <Header className='header'><Title style={{marginBottom: 0, color: 'whitesmoke'}} underline={true} strong={true} code={true}>sunrise.local</Title></Header>
       <Content>
         <Card style={{ margin: 20}}>
           <TimeWave></TimeWave>
@@ -104,6 +104,7 @@ function App() {
           <UserColourPicker set_colour_callback={set_colour} />
         </Card>
       </Content>
+      <Footer className='footer'>I had virtually no rehearsal for that. 🐝</Footer>
     </div>
   );
 }

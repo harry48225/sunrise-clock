@@ -1,12 +1,18 @@
-.topBar {
-  background-color: orangered;
-}
-
 .App {
-  background-color: lightgrey;
+  background-color: #C1CDCD;
   min-height: 100vh;
 }
 
 .dayButton {
   margin: 0px;
+}
+
+.header {
+  background-color:#556B2F !important;
+  display: flex;
+  align-items: center;
+}
+
+.footer {
+  background-color: #556B2F !important;
 }
