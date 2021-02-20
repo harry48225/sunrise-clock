@@ -21,10 +21,10 @@ function AlarmCreator({add_alarm_callback}) {
                 <span><code>alarm time:</code></span>
                 <Form.Item style={{margin:0}} rules={[{required:true, type:'object'}]}
                     name="time">
-                    <TimePicker format="HH:mm" />
+                    <TimePicker format="HH:mm" placeholder="" style={{ width: 80 }}/>
                 </Form.Item>
                 <Form.Item style={{margin:0}}>
-                <Button shape="round" type="primary" htmlType="submit">Add alarm</Button>
+                <Button shape="round" type="primary" htmlType="submit"><code>add alarm</code></Button>
                 </Form.Item>
             </Row>
         </Form>

@@ -12,7 +12,7 @@ function UserColourPicker({ set_colour_callback }) {
     return (
         <>
             <Row justify='space-around' style={{ marginBottom:20 }}><SwatchesPicker width={400} onChange={handleChange}/></Row>
-            <Row justify='space-around'><Button shape="round" type="primary" onClick={() => set_colour_callback(0,0,0)}>Clear</Button></Row>
+            <Row justify='space-around'><Button shape="round" type="primary" onClick={() => set_colour_callback(0,0,0)}><code>clear led colour</code></Button></Row>
         </>
     )
 }
