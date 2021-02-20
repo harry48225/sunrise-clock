@@ -13,6 +13,9 @@ import { useEffect } from 'react';
 import UserColourPicker from './UserColourPicker';
 
 
+import combee_gif from './assets/combee-cropped.gif'
+
+
 
 function App() {
 
@@ -89,7 +92,10 @@ function App() {
   
   return (
     <div className="App">
-      <Header className='header'><Title style={{marginBottom: 0, color: 'whitesmoke'}} underline={true} strong={true} code={true}>sunrise.local</Title></Header>
+      <Header className='header'>
+        <Title style={{marginBottom: 0, color: 'whitesmoke', flexGrow: 4}} underline={true} strong={true} code={true}>sunrise.local</Title>
+        <img src={combee_gif} alt="combee" style={{margin: 0, float: 'right'}}/>
+      </Header>
       <Content>
         <Card style={{ margin: 20}}>
           <TimeWave></TimeWave>
