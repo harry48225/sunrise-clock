@@ -36,7 +36,7 @@ function TimeWave() {
                     data: altitude_array,
                     fill: false,
                     pointRadius: 0, // Remove the points
-                    borderColor: 'rgba(255,85,43, 1)',
+                    borderColor: '#C1CDCD',//'rgba(255,85,43, 1)',
                     cubicInterpolationMode: 'monotone',
                 }
             ]
@@ -53,10 +53,10 @@ function TimeWave() {
         scales: {
             xAxes: [{
                 gridLines: {
-                    display: false
+                    display: true
                 },
                 ticks: {
-                    display: true
+                    display: false
                 }
             }],
             yAxes: [{
@@ -75,7 +75,10 @@ function TimeWave() {
 
     
     return (
+        <>
         <Line data={data} options={options}/>
+        <p style={{textAlign: 'center', marginTop: 15, marginBottom: -10}}><code>sun elevation</code></p>
+        </>
     )
 }
 
