@@ -18,12 +18,13 @@ function AlarmCreator({add_alarm_callback}) {
     return (
         <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
             <Row justify="space-around" align="middle">
-                <Form.Item label="Time" rules={[{required:true, type:'object'}]}
+                <span><code>alarm time:</code></span>
+                <Form.Item style={{margin:0}} rules={[{required:true, type:'object'}]}
                     name="time">
                     <TimePicker format="HH:mm" />
                 </Form.Item>
-                <Form.Item>
-                <Button type="primary" htmlType="submit">Add alarm</Button>
+                <Form.Item style={{margin:0}}>
+                <Button shape="round" type="primary" htmlType="submit">Add alarm</Button>
                 </Form.Item>
             </Row>
         </Form>
