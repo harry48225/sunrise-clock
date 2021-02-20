@@ -5,7 +5,7 @@ function DayButtons({days, modify_alarm}) {
 
     return (
     <>
-        <Row justify='space-around'>
+        <Row justify='space-around' style={{marginLeft:-10}}>
         <Button shape="circle" className="dayButton" type={days.mon ? 'primary' : 'dashed'} onClick={() => modify_alarm({mon: !days.mon})}>M</Button>
         <Button shape="circle" className="dayButton" type={days.tue ? 'primary' : 'dashed'} onClick={() => modify_alarm({tue: !days.tue})}>T</Button>
         <Button shape="circle" className="dayButton" type={days.wed ? 'primary' : 'dashed'} onClick={() => modify_alarm({wed: !days.wed})}>W</Button>
