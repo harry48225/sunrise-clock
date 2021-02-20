@@ -110,7 +110,7 @@ function App() {
           <UserColourPicker set_colour_callback={set_colour} />
         </Card>
       </Content>
-      <Footer className='footer'>I had virtually no rehearsal for that. 🐝</Footer>
+      <Footer className='footer'><code style={{color: 'whitesmoke'}}>i had virtually no rehearsal for that. 🐝</code></Footer>
     </div>
   );
 }
