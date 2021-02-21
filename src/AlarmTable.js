@@ -16,7 +16,7 @@ function AlarmTable({alarm_list, modify_alarm, delete_alarm}) {
       key: 'time',
       render: (time, record) => (
         <>
-          <code style={{fontSize: 16, marginLeft: -5,marginRight: 0}}>{time}:</code>
+          <code style={{fontSize: 16, marginLeft: -5,marginRight: 0}}>{time}</code>
         </>
       ),
     },
