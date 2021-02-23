@@ -9,8 +9,10 @@ from datetime import date, datetime, timedelta
 
 from kelvin_to_rgb import convert_K_to_RGB
 
+from numpy import interp
+
 BUILD_UP_LENGTH = 30*60 # Number of seconds alarm should take to reach full intensity
-SUSTAIN = 60*60 # Number of seconds to sustain the max brightness
+SUSTAIN = 10*60 # Number of seconds to sustain the max brightness
 COOL_DOWN = 60 # Number of seconds to cooldown
 
 START_TEMP = 1500
@@ -90,65 +92,35 @@ def update_colour():
     for alarm in alarm_times:
 
         # See which alarms have yet to come
-        time_until_alarm = alarm - datetime.now()
+        time_until_alarm = datetime.now() - alarm
         update = False
 
-        if timedelta()< time_until_alarm < timedelta(seconds=BUILD_UP_LENGTH):
-            build_up_progress = 1 - time_until_alarm.seconds / BUILD_UP_LENGTH
-            print("less than 30 for " + str(alarm.time()) + f" with exact time {time_until_alarm.seconds/60} and build_up {build_up_progress}")
+        # Construct a linear interpolation
 
-            # Now rescale so that the progress is from 1500k to 6500k
+        xp_timedelta = [-timedelta(seconds=BUILD_UP_LENGTH), timedelta(), timedelta(seconds=SUSTAIN), timedelta(seconds=(SUSTAIN+COOL_DOWN))]
+        xp = [timedelta.total_seconds() for timedelta in xp_timedelta]
+        yp = [START_TEMP, END_TEMP, END_TEMP, START_TEMP]
 
-            colour_temp = START_TEMP + (END_TEMP - START_TEMP)*build_up_progress
+        if xp_timedelta[0] <= time_until_alarm <= xp_timedelta[-1]:
+            colour_temp = interp(time_until_alarm.total_seconds(), xp, yp)
 
             r,g,b= convert_K_to_RGB(colour_temp)
-            w = build_up_progress*255
-                   
+                    
             r = int(r)
             g = int(g)
             b = int(b)
-            w = int(w)
+            w = b # lock w to b for now
 
             update = True  
-            
 
-        # See which alarms have passed
-
-        time_after_alarm = datetime.now() - alarm
-
-        if timedelta() < time_after_alarm < timedelta(seconds=SUSTAIN):
-
-            r,g,b = convert_K_to_RGB(END_TEMP)
-            w = 255
-
-            r = int(r)
-            g = int(g)
-            b = int(b)
-            w = int(w)
+        if xp_timedelta[-1] < time_until_alarm < xp_timedelta[-1] + timedelta(seconds = 10):
+            r,g,b,w = 0,0,0,0
 
             update = True
-
-        elif timedelta(seconds=SUSTAIN) < time_after_alarm < timedelta(seconds=SUSTAIN+COOL_DOWN+10): # 10 second buffer
-            # progress goes from 1 to 0
-            cool_down_progress = ((COOL_DOWN - (time_after_alarm.seconds-SUSTAIN)) / COOL_DOWN)
-            colour_temp = START_TEMP + (END_TEMP - START_TEMP)*cool_down_progress
-            print(f"cool-down progress {cool_down_progress}, temp: {colour_temp}")
-            r,g,b= convert_K_to_RGB(colour_temp)
-            w = (1-cool_down_progress)*255
-                   
-            r = max(int(r*cool_down_progress), 0)
-            g = max(int(g*cool_down_progress), 0)
-            b = max(int(b*cool_down_progress), 0)
-            w = max(int(w*cool_down_progress), 0)
-
-            
-
-            update = True
-
         if update:
             d.cursor().execute(f'UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,w))
             d.commit()
-            d.close()
+    d.close()
 
 
 
