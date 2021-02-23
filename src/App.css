@@ -1,6 +1,8 @@
 .App {
   background-color: #C1CDCD;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .dayButton {
