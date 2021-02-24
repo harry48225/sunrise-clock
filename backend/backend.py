@@ -12,7 +12,7 @@ from kelvin_to_rgb import convert_K_to_RGB
 from numpy import interp
 
 BUILD_UP_LENGTH = 30*60 # Number of seconds alarm should take to reach full intensity
-SUSTAIN = 10*60 # Number of seconds to sustain the max brightness
+SUSTAIN = 25*60 # Number of seconds to sustain the max brightness
 COOL_DOWN = 60 # Number of seconds to cooldown
 
 START_TEMP = 1500
