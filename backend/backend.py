@@ -46,6 +46,11 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS alarms (id TEXT PRIMARY KEY,\
                                                 sun INTEGER)''')
 
 
+# Create the sunsets table, if it already exists it doesn't get overwritten
+# end_time should be unix time
+cursor.execute('''CREATE TABLE IF NOT EXISTS sunsets (id TEXT PRIMARY KEY,\
+                                                    end_time REAL)''')
+
 # Create a table that stores the current colour of the alarm
 cursor.execute('''CREATE TABLE IF NOT EXISTS colours (red INTEGER,\
                                                     green INTEGER,\
@@ -246,6 +251,27 @@ def set_colour_rgb():
     d.commit()
     d.close()
     return "colour set"
+
+@app.route('/api/start_sunset', methods=['POST'])
+def start_sunset():
+    ''' Starts a sunset from the current time for the given length '''
+    ''' request {'duration': <minutes as int>}'''
+    request_json = request.get_json()
+    print(request_json)
+    duration = int(request_json['duration'])
+
+    end_timestamp = (datetime.now() + timedelta(minutes=duration)).timestamp()
+
+    # Create a unique id for the alarm
+    id = str(uuid4())
+    d = get_database()
+
+    d.cursor().execute('''INSERT INTO sunsets VALUES (?,?)''', [id, end_timestamp])
+
+    d.commit()
+    d.close()
+
+    return "sunset started"
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

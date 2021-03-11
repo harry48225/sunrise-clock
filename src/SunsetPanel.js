@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Slider, Button, Row } from 'antd';
+import { Form, Slider, Button, Row } from 'antd';
 
 const marks = {
     5: '5m',
@@ -10,15 +10,30 @@ const marks = {
     30: '30m',
 };
 
-function SunsetPanel() {
-//style = {{width: '100%'}}
+function SunsetPanel({start_sunset}) {
+
+    const onFinish = (values) => {
+        console.log(values)
+        start_sunset(values.duration);
+    };
+
     return (
     <> 
+    <Form onFinish={onFinish}>
         <Row justify='space-around'>
             <div style = {{ flexGrow: 4 }}>
-                <Slider style = {{ marginRight: 50 }} min={5} max={30} marks={marks} />
+                <Form.Item rules = {[{required:true}]} name="duration">
+                
+                    <Slider style = {{ marginRight: 50 }} min={5} max={30} marks={marks} />
+                
+                </Form.Item>
             </div>
-            <Button style = {{ marginRight: 25 }} shape="round" type="primary">start sunset</Button></Row>
+            <Form.Item>
+                <Button style = {{ marginRight: 25 }} shape="round" type="primary" htmlType="submit"><code>start sunset</code></Button>
+            </Form.Item>
+        </Row>
+            
+    </Form>
     </>
     )
 }

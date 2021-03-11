@@ -25,6 +25,13 @@ function App() {
 
   const [alarm_list, set_alarms_list] = useState();
 
+  function start_sunset(duration) {
+
+    fetch(apiUrl+"start_sunset", { method: 'POST',
+                                  headers: {'Content-Type': 'application/json'},
+                                 body: JSON.stringify({duration: duration}) })
+  }
+
   function delete_alarm(id) {
     // Takes the id of an alarm and deletes it
     fetch(apiUrl+"delete_alarm", { method: 'POST', 
@@ -108,7 +115,7 @@ function App() {
           <AlarmCreator add_alarm_callback={add_alarm}></AlarmCreator>
         </Card>
         <Card className="card">
-          <SunsetPanel />
+          <SunsetPanel start_sunset={start_sunset} />
         </Card>
         <Card className="card">
           <UserColourPicker set_colour_callback={set_colour} />
