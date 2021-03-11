@@ -75,9 +75,8 @@ app = Flask(__name__)
 
 CORS(app)
 
-def update_colour():
-    ''' called periodically and computes the colour that the alarm should be '''
-
+def update_colour_from_alarms():
+    ''' checks the alarms table and determines the colour that the alarm should be '''
     current_day = DAYS_OF_WEEK[date.today().weekday()]
     r,g,b,w = 0,0,0,0
 
@@ -126,6 +125,53 @@ def update_colour():
             d.cursor().execute(f'UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,w))
             d.commit()
     d.close()
+
+def update_colour_from_sunsets():
+    ''' checks the sunset table and determines what colour the alarm should be'''
+
+    d = get_database()
+
+    # Get all the sunset end times from the database
+    for end_time in d.cursor().execute('SELECT end_time FROM sunsets'):
+
+        time_until_sunset_end = datetime.fromtimestamp(end_time[0]) - datetime.now()
+        #print(time_until_sunset_end)
+        # if the sunset hasn't already passed
+        if time_until_sunset_end > timedelta():
+
+            # Currently configured for sunsets at maximum of 30 mins long
+            # Interpolate between 1500K and 4000K
+            colour_temp = interp(time_until_sunset_end.total_seconds(), [0, 60*30], [1500, 4000])
+
+            r,g,b= convert_K_to_RGB(colour_temp)
+                    
+            r = int(r)
+            g = int(g)
+            b = int(b)
+            w = b//2 # lock w to b for now
+
+            d.cursor().execute(f'UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,w))
+            d.commit()
+
+        # if the sunset has already passed
+        if time_until_sunset_end < timedelta():
+            #print("removing")
+            r,g,b,w = 0,0,0,0
+
+            d.cursor().execute(f'UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,w))
+            d.cursor().execute('DELETE FROM sunsets WHERE end_time = ?', (end_time)) # Delete the sunset from the database
+            d.commit()
+
+    d.close()
+
+
+def update_colour():
+    ''' called periodically and computes the colour that the alarm should be '''
+
+    update_colour_from_alarms()
+    update_colour_from_sunsets()
+
+    
 
 
 
