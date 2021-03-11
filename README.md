@@ -3,6 +3,7 @@
 raspberry pi powered sunrise (simulating) alarm clock. built using react and python.
 
 ## ```web app```
+![webapp screenshot](https://github.com/harry48225/sunrise-clock/blob/master/screenshots/webapp.jpg)
 
 ## ```wiring```
 
