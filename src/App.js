@@ -1,6 +1,7 @@
 import TimeWave from './TimeWave';
 import AlarmTable from './AlarmTable';
 import AlarmCreator from './AlarmCreator';
+import SunsetPanel from './SunsetPanel';
 
 import { Typography, Layout } from 'antd';
 import { Card } from 'antd';
@@ -105,6 +106,9 @@ function App() {
         </Card>
         <Card className="card">
           <AlarmCreator add_alarm_callback={add_alarm}></AlarmCreator>
+        </Card>
+        <Card className="card">
+          <SunsetPanel />
         </Card>
         <Card className="card">
           <UserColourPicker set_colour_callback={set_colour} />
