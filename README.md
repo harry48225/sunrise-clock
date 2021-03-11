@@ -1,13 +1,13 @@
-# sunrise.local
+# ```sunrise.local```
 
 raspberry pi powered sunrise (simulating) alarm clock. built using react and python.
 
 
-## wiring
+## ```wiring```
 
 ![wiring diagram](https://github.com/harry48225/sunrise-clock/blob/master/schematics/wiring_bb.png)
 
-## setup
+## ```setup```
 
 * ensure that the raspberry pi has the hostname ```sunrise```
 * wire up as shown in the diagram
