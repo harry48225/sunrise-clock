@@ -142,13 +142,13 @@ def update_colour_from_sunsets():
             # Currently configured for sunsets at maximum of 30 mins long
             # Interpolate between 1500K and 4000K
             colour_temp = interp(time_until_sunset_end.total_seconds(), [0, 60*30], [1500, 4000])
-
+            brightness_multiplier = interp(time_until_sunset_end.total_seconds(), [0, 60*5, 60*15,60*30], [0,0.2,1,1])
             r,g,b= convert_K_to_RGB(colour_temp)
                     
-            r = int(r)
-            g = int(g)
-            b = int(b)
-            w = b//2 # lock w to b for now
+            r = int(r*brightness_multiplier)
+            g = int(g*brightness_multiplier)
+            b = int(b*brightness_multiplier)
+            w = (b*brightness_multiplier)//2 # lock w to b for now
 
             d.cursor().execute(f'UPDATE colours SET red = ?, green = ?, blue = ?, white = ?', (r,g,b,w))
             d.commit()
