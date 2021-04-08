@@ -5,8 +5,8 @@ const fetch = require('node-fetch')
 // but only if it goes offline between certain times
 const HOST = "fangorn.local"
 
-const START_HOUR = 20
-const SLEEP_DURATION = 1 // duration in seconds
+const START_HOUR = 22
+const SLEEP_DURATION = 10 // duration in seconds
 
 console.log("started")
 
@@ -34,7 +34,7 @@ async function main_loop() {
     if (current_state === States.IDLE) {
         // check to see if we should become active
 
-        // if it's after 2200
+        // if it's after the start hour
         if (today.getHours() >= START_HOUR) {
             current_state = States.WAITING_FOR_BOOT
         }
