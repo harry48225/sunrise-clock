@@ -1,0 +1,14 @@
+{
+  "name": "auto-sunset",
+  "version": "1.0.0",
+  "description": "automatically triggers a sunset when a computer on the network shuts down between specific times",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ping": "^0.4.1"
+  }
+}

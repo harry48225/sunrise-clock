@@ -26,3 +26,9 @@ backend/venv
 backend/alarms.db
 .vscode/settings.json
 cad/body.stl
+
+auto-sunset/node_modules
+auto-sunset/build
+auto-sunset/npm-debug.log
+auto-sunset/.DS_Store
+auto-sunset/.env
