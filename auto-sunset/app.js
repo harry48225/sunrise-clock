@@ -1,12 +1,39 @@
 const ping = require('ping')
 const fetch = require('node-fetch')
+const mdns = require('multicast-dns')()
 
 // we will ping this host and start a sunset when it goes offline
 // but only if it goes offline between certain times
 const HOST = "fangorn.local"
+let HOST_IP = null;
+
+let SUNRISE_IP = null;
 
 const START_HOUR = 22
 const SLEEP_DURATION = 10 // duration in seconds
+
+
+
+mdns.on('response', function(response) {
+    response.answers.forEach((answer) => {
+        if (answer.name == HOST) {
+            HOST_IP = answer.data
+            console.log("discovered " + HOST + " at " + HOST_IP)
+        }
+
+        else if (answer.name == "sunrise.local") {
+            SUNRISE_IP = answer.data
+            console.log("discovered sunrise.local at " + SUNRISE_IP)
+        }
+    })
+
+    if (current_state === States.IDLE && SUNRISE_IP !== null && HOST_IP !== null) {
+        current_state = States.WAITING_FOR_BOOT
+    }
+    
+})
+
+
 
 console.log("started")
 
@@ -36,13 +63,29 @@ async function main_loop() {
 
         // if it's after the start hour
         if (today.getHours() >= START_HOUR) {
-            current_state = States.WAITING_FOR_BOOT
+            
+            // get the latest ip addresses of the hosts to monitor
+            mdns.query({
+                questions:[{
+                    name:HOST,
+                    type: 'A'
+                },
+                {
+                    name:"sunrise.local",
+                    type: 'A'
+                }]
+            })
+
+            HOST_IP = null;
+            SUNRISE_IP = null;
+
+            console.log("queryed mDNS")
         }
     }
 
     else if (current_state === States.WAITING_FOR_BOOT || current_state === States.WAITING_FOR_SHUTDOWN) {
 
-        let response = await ping.promise.probe(HOST)
+        let response = await ping.promise.probe(HOST_IP)
 
         let is_booted = response.alive
         
@@ -52,7 +95,7 @@ async function main_loop() {
 
         else if (current_state === States.WAITING_FOR_SHUTDOWN && !is_booted) {
 
-            fetch("http://sunrise.local/api/start_sunset", 
+            fetch(`http://${SUNRISE_IP}/api/start_sunset`, 
                 {method : 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({duration: 30}) }).then((res) => (console.log("sunrise reponse: " + res)))
