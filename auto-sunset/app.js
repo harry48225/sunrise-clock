@@ -4,12 +4,13 @@ const mdns = require('multicast-dns')()
 
 // we will ping this host and start a sunset when it goes offline
 // but only if it goes offline between certain times
-const HOST = "fangorn.local"
+const HOST = process.env.HOST
 let HOST_IP = null;
 
 let SUNRISE_IP = null;
 
-const START_HOUR = 22
+const START_HOUR = process.env.START_HOUR
+console.log(START_HOUR)
 const SLEEP_DURATION = 10 // duration in seconds
 
 
