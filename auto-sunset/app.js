@@ -16,7 +16,7 @@ const SLEEP_DURATION = 10 // duration in seconds
 
 
 mdns.on('response', function(response) {
-    response.answers.forEach((answer) => {
+    response.answers.filter((answer) => (answer.type == 'A')).forEach((answer) => {
         if (answer.name == HOST) {
             HOST_IP = answer.data
             console.log("discovered " + HOST + " at " + HOST_IP)
